@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequest;
 
 import online.pizzacrust.trello.Card;
 
@@ -41,9 +43,11 @@ public class BasicCard extends BasicIdentifiable implements Card {
 
     public void refresh() throws Exception {
         String rootUrl = "https://api.trello.com/1/cards/" + id;
-        BasicCard basicCard = Unirest.get(rootUrl).queryString("key", apiKey).queryString
-                ("token", userToken)
-                .asObject(BasicCard.class).getBody();
+        HttpRequest request = Unirest.get(rootUrl);
+        if (apiKey != null && userToken != null) {
+            request = request.queryString("key", apiKey).queryString("token", userToken);
+        }
+        BasicCard basicCard = request.asObject(BasicCard.class).getBody();
         this.description = basicCard.getDescription();
         this.name = basicCard.getName();
     }
