@@ -2,7 +2,7 @@ package online.pizzacrust.trello.impl;
 
 import online.pizzacrust.trello.Identifiable;
 
-public class BasicIdentifiable implements Identifiable {
+public abstract class BasicIdentifiable implements Identifiable {
 
     protected String id;
 
