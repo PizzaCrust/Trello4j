@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,10 @@ public class WebService {
         });
         this.apiKey = apiKey;
         this.userToken = userToken;
+    }
+
+    public boolean isUsingAuthentication() {
+        return apiKey != null && userToken != null;
     }
 
     private Map<String, Object> convertToMap(String[] varargs) {
@@ -57,6 +62,15 @@ public class WebService {
         return getRequest.queryString(convertToMap
                 (paramNameToParamVal)).asObject
                 (clazz).getBody();
+    }
+
+    public void putRequest(String rootUrl,
+                           String... paramNameToParamVal) throws Exception {
+        HttpRequestWithBody putRequest = Unirest.put(rootUrl);
+        if (apiKey != null && userToken != null) {
+            putRequest.queryString("key", apiKey).queryString("token", userToken);
+        }
+        putRequest.queryString(convertToMap(paramNameToParamVal)).asString();
     }
 
 }

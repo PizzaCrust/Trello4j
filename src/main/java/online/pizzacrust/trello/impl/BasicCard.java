@@ -38,10 +38,18 @@ public class BasicCard extends BasicIdentifiable implements Card {
         this.name = basicCard.getName();
     }
 
+    public void setDescription(String string) throws Exception {
+        if (!webService.isUsingAuthentication()) {
+            throw new Exception();
+        }
+        webService.putRequest("https://api.trello.com/1/cards/" + id, "desc", string);
+    }
+
     public static void main(String... args) throws Exception {
         BasicCard basicCard = new BasicCard("fHuGaT5h", new WebService(args[0], args[1]));
         System.out.println(basicCard.getName());
         System.out.println(basicCard.getDescription());
+        basicCard.setDescription("modified");
     }
 
 }
