@@ -43,7 +43,7 @@ public class BasicBoard extends BasicIdentifiable implements Board {
     }
 
     public static void main(String... args) throws Exception {
-        BasicBoard basicBoard = new BasicBoard("WUuzcZf5", new WebService(args[0], args[1]));
+        BasicBoard basicBoard = new BasicBoard("WUuzcZf5", new WebService(null, null));
         System.out.println(basicBoard.name);
         for (BoardList boardList : basicBoard.getLists()) {
             boardList.refresh();

@@ -63,11 +63,25 @@ public class WebService {
         T t =  getRequest.queryString(convertToMap
                 (paramNameToParamVal)).asObject
                 (clazz).getBody();
-        for (Field field : clazz.getFields()) {
-            if (field.getType() == WebService.class) {
-                field.setAccessible(true);
-                field.set(t, this);
-                break;
+        if (!t.getClass().isArray()) {
+            for (Field field : clazz.getFields()) {
+                if (field.getType() == WebService.class) {
+                    field.setAccessible(true);
+                    field.set(t, this);
+                    break;
+                }
+            }
+        } else {
+            Class<?> componentType = t.getClass().getComponentType();
+            Object[] tArray = (Object[]) t;
+            for (Object t1 : tArray) {
+                for (Field field : componentType.getDeclaredFields()) {
+                    if (field.getType() == WebService.class) {
+                        field.setAccessible(true);
+                        field.set(t1, this);
+                        break;
+                    }
+                }
             }
         }
         return t;
