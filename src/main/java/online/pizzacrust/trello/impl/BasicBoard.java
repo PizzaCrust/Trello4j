@@ -46,7 +46,7 @@ public class BasicBoard extends BasicIdentifiable implements Board {
         BasicBoard basicBoard = new BasicBoard("WUuzcZf5", new WebService(args[0], args[1]));
         System.out.println(basicBoard.name);
         for (BoardList boardList : basicBoard.getLists()) {
-            System.out.println(boardList.getName());
+            boardList.refresh();
         }
     }
 }

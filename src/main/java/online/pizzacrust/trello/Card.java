@@ -1,6 +1,6 @@
 package online.pizzacrust.trello;
 
-public interface Card extends Identifiable {
+public interface Card extends Identifiable,Refreshable {
 
     String getDescription();
 

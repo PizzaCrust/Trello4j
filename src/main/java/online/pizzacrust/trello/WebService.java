@@ -7,6 +7,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,9 +60,17 @@ public class WebService {
                     ("token",
                             userToken);
         }
-        return getRequest.queryString(convertToMap
+        T t =  getRequest.queryString(convertToMap
                 (paramNameToParamVal)).asObject
                 (clazz).getBody();
+        for (Field field : clazz.getFields()) {
+            if (field.getType() == WebService.class) {
+                field.setAccessible(true);
+                field.set(t, this);
+                break;
+            }
+        }
+        return t;
     }
 
     public void putRequest(String rootUrl,
