@@ -6,4 +6,6 @@ public interface Card extends Identifiable,Refreshable {
 
     void setDescription(String newDesc) throws Exception;
 
+    PluginData[] getPluginData();
+
 }
